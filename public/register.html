@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>회원가입</title>
+  <style>
+    html, body {
+      margin: 0; 
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: sans-serif;
+      background: #fafafa;
+    }
+
+    .register-container {
+      width: 350px;
+      padding: 30px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      background: #fff;
+      border-radius: 8px;
+    }
+
+    .register-container h2 {
+      margin-bottom: 20px;
+      text-align: center;
+      font-size: 1.5rem;
+    }
+
+    .register-container label {
+      display: block;
+      margin-top: 10px;
+      font-size: 0.9rem;
+      color: #333;
+    }
+
+    .register-container input,
+    .register-container select {
+      width: 100%;
+      padding: 8px 10px;
+      margin-top: 5px;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    .register-container button {
+      width: 100%;
+      padding: 10px;
+      font-size: 1rem;
+      margin-top: 20px;
+      cursor: pointer;
+      border: none;
+      border-radius: 4px;
+      background-color: #4CAF50;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="register-container">
+    <h2>회원가입</h2>
+
+    <!-- 이름 입력 -->
+    <label for="name">이름</label>
+    <input type="text" id="name" placeholder="이름을 입력하세요" />
+
+    <!-- 생년월일 입력 -->
+    <label for="birth">생년월일</label>
+    <input type="date" id="birth" />
+
+    <!-- 성별 선택 -->
+    <label for="gender">성별</label>
+    <select id="gender">
+      <option value="" disabled selected>선택하세요</option>
+      <option value="male">남성</option>
+      <option value="female">여성</option>
+      <option value="other">기타</option>
+    </select>
+
+    <!-- 음식 취향 입력 -->
+    <label for="preference">음식 취향</label>
+    <input type="text" id="preference" placeholder="예) 한식, 양식, 디저트 등" />
+
+    <!-- 제출 버튼 -->
+    <button type="button">회원가입 완료</button>
+  </div>
+</body>
+</html>
