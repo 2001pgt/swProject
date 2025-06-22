@@ -43,19 +43,7 @@ UNLOCK TABLES;
 select * from food_ingredients;
 --
 -- Table structure for table `food_recipes`
---
-
-DROP TABLE IF EXISTS `food_recipes`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `food_recipes` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `food_name` varchar(255) NOT NULL,
-  `recipe` text NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=281 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
+-
 --
 -- Dumping data for table `food_recipes`
 DROP TABLE IF EXISTS `food_recipes`;
@@ -91,23 +79,13 @@ UNLOCK TABLES;
 -- users 테이블 수정 (email을 user_id로 변경)
 USE food_db;
 
--- 기존 테이블 삭제
-DROP TABLE IF EXISTS `users`;
-
--- 새로운 users 테이블 생성 (email 대신 user_id 사용)
-CREATE TABLE `users` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `username` varchar(50) NOT NULL,
-  `user_id` varchar(50) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `user_id` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- 테이블 생성 확인
 SHOW TABLES;
 DESCRIBE users;
+
+-- 기존 테이블 삭제
+DROP TABLE IF EXISTS `users`;
 
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
