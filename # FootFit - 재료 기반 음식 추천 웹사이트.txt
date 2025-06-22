@@ -1,0 +1,226 @@
+# FootFit - 재료 기반 음식 추천 웹사이트
+## 프로젝트 발표자료
+
+---
+
+## 📋 프로젝트 개요
+
+**FootFit**은 사용자가 가지고 있는 재료를 입력하면 만들 수 있는 요리를 추천해주는 웹사이트입니다. 
+빠르고 정확한 레시피 검색과 맞춤형 추천 시스템을 통해 사용자의 요리 경험을 향상시킵니다.
+
+### 🎯 주요 목표
+- 사용자 친화적인 재료 기반 레시피 검색
+- 정확한 매칭 알고리즘을 통한 최적의 요리 추천
+- 개인화된 서비스 제공
+
+---
+
+## 🛠 기술 스택
+
+### Backend
+- **Node.js** - 서버 런타임 환경
+- **Express.js** - 웹 애플리케이션 프레임워크
+- **MySQL** - 관계형 데이터베이스
+- **JWT (JSON Web Token)** - 사용자 인증 및 세션 관리
+- **bcryptjs** - 비밀번호 암호화
+- **CORS** - Cross-Origin Resource Sharing 지원
+
+### Frontend
+- **HTML5** - 시맨틱 마크업
+- **CSS3** - 반응형 스타일링
+- **JavaScript (ES6+)** - 클라이언트 사이드 로직
+- **Font Awesome** - 아이콘 라이브러리
+
+### 개발 도구
+- **Nodemon** - 개발 서버 자동 재시작
+- **Express Validator** - 입력 데이터 검증
+
+---
+
+## 🏗 프로젝트 구조
+
+```
+footfit/
+├── backend/
+│   ├── server.js          # 메인 서버 파일
+│   ├── config/
+│   │   └── database.js    # MySQL 연결 설정
+│   ├── middleware/
+│   │   └── auth.js        # JWT 인증 미들웨어
+│   └── routes/
+│       ├── auth.js        # 회원가입/로그인 API
+│       ├── recipes.js     # 레시피 검색/상세 API
+│       └── ingredients.js # 재료 관련 API
+├── frontend/
+│   ├── index.html         # 메인 페이지
+│   ├── login.html         # 로그인 페이지
+│   ├── register.html      # 회원가입 페이지
+│   ├── recipes.html       # 레시피 목록 페이지
+│   ├── recipe-detail.html # 레시피 상세 페이지
+│   ├── css/
+│   │   └── style.css      # 스타일시트
+│   └── js/
+│       ├── main.js        # 메인 JavaScript
+│       ├── auth.js        # 인증 관련 로직
+│       ├── recipes.js     # 레시피 목록 로직
+│       └── recipe-detail.js # 레시피 상세 로직
+└── package.json
+```
+
+---
+
+## 🔍 검색 알고리즘
+
+### 핵심 로직
+
+```sql
+SELECT
+    fr.id,
+    fr.food_name,
+    fr.recipe,
+    COUNT(DISTINCT fi.ingredient_name) as matching_ingredients,
+    total_ingredients.total_count as total_ingredients,
+    (COUNT(DISTINCT fi.ingredient_name) * 100.0 / total_ingredients.total_count) as match_percentage
+FROM food_recipes fr
+JOIN food_ingredients fi ON fr.food_name = fi.food_name
+WHERE (사용자_입력_재료_매칭_조건)
+GROUP BY fr.id, fr.food_name, fr.recipe, total_ingredients.total_count
+HAVING match_percentage > 0
+ORDER BY match_percentage DESC, matching_ingredients DESC
+LIMIT 20
+```
+
+### 알고리즘 특징
+
+1. **재료 매칭률 계산**
+   - 사용자 입력 재료와 레시피 재료 간의 일치도 계산
+   - `매칭_재료_수 / 전체_재료_수 * 100`으로 백분율 계산
+
+2. **기피 재료 필터링**
+   - 사용자가 설정한 기피 재료가 포함된 레시피는 제외
+   - 개인화된 추천 서비스 제공
+
+3. **정렬 기준**
+   - 1차: 매칭률 내림차순 (높은 매칭률 우선)
+   - 2차: 매칭 재료 수 내림차순 (더 많은 재료 매칭 우선)
+
+4. **결과 제한**
+   - 상위 20개 레시피만 반환하여 성능 최적화
+
+---
+
+## 🚀 주요 기능
+
+### 1. 재료 기반 레시피 검색
+- 사용자가 가진 재료를 쉼표로 구분하여 입력
+- 실시간 검색 결과 제공
+- 매칭률 표시로 신뢰성 향상
+
+### 2. 맞춤 추천 시스템
+- 개인 기피 재료 설정 및 반영
+- 매칭률 기반 정렬로 최적의 레시피 우선 표시
+- 사용자별 맞춤형 추천
+
+### 3. 상세 레시피 정보
+- 조리 방법 및 단계별 설명
+- 필요한 재료 및 양 표시
+- 영양 정보 및 조리 팁 제공
+
+### 4. 사용자 인증 시스템
+- JWT 기반 보안 인증
+- 회원가입/로그인/로그아웃 기능
+- 개인정보 관리
+
+### 5. 반응형 웹 디자인
+- 모바일/태블릿/데스크톱 호환
+- 직관적인 사용자 인터페이스
+- 접근성 고려한 디자인
+
+---
+
+## 📊 API 엔드포인트
+
+### 인증 API
+- `POST /api/auth/register` - 회원가입
+- `POST /api/auth/login` - 로그인
+
+### 레시피 API
+- `GET /api/recipes/search?ingredients=재료1,재료2` - 재료 기반 레시피 검색
+- `GET /api/recipes/:id` - 레시피 상세 정보
+- `GET /api/recipes/ingredients/list` - 모든 재료 목록
+
+### 재료 API
+- `GET /api/ingredients` - 전체 재료 목록
+- `GET /api/ingredients/search?q=검색어` - 재료 검색
+
+---
+
+## 💾 데이터베이스 설계
+
+### 주요 테이블
+
+1. **food_recipes** - 레시피 기본 정보
+   - id, food_name, recipe, cooking_time, difficulty
+
+2. **food_ingredients** - 레시피별 재료 정보
+   - food_name, ingredient_name, quantity
+
+3. **users** - 사용자 정보
+   - id, username, email, password_hash
+
+4. **user_disliked_ingredients** - 사용자 기피 재료
+   - user_id, ingredient_name
+
+---
+
+## 🔒 보안 기능
+
+- **비밀번호 암호화**: bcryptjs를 사용한 안전한 비밀번호 저장
+- **JWT 인증**: 토큰 기반 인증으로 보안 강화
+- **입력 검증**: Express Validator를 통한 데이터 검증
+- **SQL 인젝션 방지**: Prepared Statement 사용
+
+---
+
+## 📱 사용자 경험 (UX)
+
+### 직관적인 검색 프로세스
+1. 홈페이지에서 재료 입력
+2. 실시간 검색 결과 확인
+3. 매칭률 기반 정렬된 레시피 목록
+4. 상세 페이지에서 완전한 조리 정보 확인
+
+### 반응형 디자인
+- 모바일 우선 설계
+- 터치 친화적 인터페이스
+- 빠른 로딩 속도
+
+---
+
+## 🎯 향후 개선 계획
+
+1. **AI 기반 추천 시스템**
+   - 머신러닝을 활용한 개인화 추천
+   - 사용자 선호도 학습
+
+2. **이미지 인식 기능**
+   - 재료 사진 업로드로 자동 인식
+   - OCR을 통한 텍스트 추출
+
+3. **소셜 기능**
+   - 레시피 공유 및 평가
+   - 사용자 커뮤니티
+
+4. **영양 정보 확장**
+   - 칼로리 및 영양소 정보
+   - 다이어트 맞춤 추천
+
+---
+
+## 🏁 결론
+
+FootFit은 현대적인 웹 기술을 활용하여 사용자 친화적인 재료 기반 레시피 추천 서비스를 제공합니다. 
+정확한 검색 알고리즘과 개인화된 추천 시스템을 통해 사용자의 요리 경험을 크게 향상시킬 수 있는 
+실용적이고 혁신적인 웹 애플리케이션입니다.
+
+**감사합니다!** 🍳
